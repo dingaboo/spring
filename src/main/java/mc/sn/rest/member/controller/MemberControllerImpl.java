@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import mc.sn.rest.member.service.MemberService;
@@ -25,6 +26,24 @@ public class MemberControllerImpl   implements MemberController {
 	private MemberService memberService;
 	@Autowired
 	private MemberVO memberVO ;
+	
+	@RequestMapping(value = "/member/checkId.do")
+	@ResponseBody
+	public String res1(@RequestParam("userId") String userId, 
+	           HttpServletRequest request, HttpServletResponse response) {
+			
+			//데이터베이스에 해당 id가 존재하는지 체크하고 결과 전송
+			MemberVO vo=memberService.searchMember(userId);
+			String result="false";
+			if(vo!=null) {
+				result="true";
+			}
+			
+			result="{\"result\":"+result+"}";
+			System.out.println(result);			
+		return result;
+	}
+	
 	
 	@Override
 	@RequestMapping(value="/member/listMembers.do" ,method = RequestMethod.GET)

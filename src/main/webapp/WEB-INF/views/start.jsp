@@ -8,16 +8,24 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 	function checkID(){
-		alert('check '+$("#userId").val());
+		var id=$("#userId").val();
+		alert('check '+id);
 		$.ajax(
 			{
 	         type:"get",
-	         url:"/rest/res1",
+	         url:"/rest/member/checkId.do",
 	         contentType: "application/json",
-	         data :{"userId":$("#userId").val()},
+	         data :{"userId": id},
 		     success:function (data,textStatus){
 		    	 alert(data);
-		    	 $('#message').text(data);
+		    	 var obj=JSON.parse(data);
+		    	 alert(obj.result);
+		    	 if(obj.result){
+		    	 	$('#message').text(id+" 사용 가능");
+		    	 }
+		    	 else{
+		    		 $('#message').text(id+" 사용 불가능"); 
+		    	 }
 		     },
 		     error:function(data,textStatus){
 		        alert("에러가 발생했습니다.");
@@ -34,10 +42,10 @@
 <body>
 	<form action="" method="">
 		<input type="text" name="userId" id="userId">
-		<input type="button" value="확인" onclick="checkID()"><br>
+		<input type="button" value="ID확인" onclick="checkID()"><br>
 		<span id="message"></span><br>
 		<input type="password" name="pwd" id="pwd">
-		<input type="submit" value="login">
+		<input type="submit" value="회원가입">
 	</form>
 </body>
 </html>
